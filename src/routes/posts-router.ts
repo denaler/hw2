@@ -1,5 +1,6 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
+import {blogsRouter} from "./blogs-router";
 export const postsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
@@ -25,3 +26,23 @@ export const postsDb: PostType[] = [
         blogName: "dalerback"
     }
 ]
+
+postsRouter.get('/', (req:Request, res: Response) => {
+
+})
+
+postsRouter.post('/', (req:Request, res: Response) => {
+
+})
+
+postsRouter.get('/:id', (req:Request, res: Response) => {
+
+})
+
+postsRouter.put('/:id', (req:Request, res: Response) => {
+
+})
+
+postsRouter.delete('/:id', (req:Request, res: Response) => {
+
+})
