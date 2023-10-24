@@ -79,8 +79,8 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     let errors: ErrorType = {
         errorsMessages: []
     }
-    let {title, shortDescription, content, blogId} = req.body
 
+    let {title, shortDescription, content, blogId} = req.body
     if (!title || title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
     }

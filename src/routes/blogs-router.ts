@@ -74,9 +74,8 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     let errors: ErrorType = {
         errorsMessages: []
     }
-    let {name, description, websiteUrl} = req.body
-    let {id} = req.params
 
+    let {name, description, websiteUrl} = req.body
     if (!name || name.trim().length > 15) {
         errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
     }
@@ -92,11 +91,8 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    const isUpdate = blogsRepository.updateBlog(blog)
-    if (isUpdate) {
-        res.sendStatus(204)
-    }
-    res.sendStatus(422)
+    blogsRepository.updateBlog(blog)
+    res.sendStatus(204)
 })
 
 blogsRouter.delete('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {

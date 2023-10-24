@@ -27,10 +27,10 @@ export const blogsRepository = {
         blogsDb[i].name = blog.name
         blogsDb[i].description = blog.description
         blogsDb[i].websiteUrl = blog.websiteUrl
-        return true
+        return
     },
     deleteBlog(id: string) {
         blogsDb.splice(blogsDb.indexOf(this.findBlogById(id)), 1)
-        return true
+        return
     }
 }
