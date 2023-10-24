@@ -27,7 +27,7 @@ export const postsRepository = {
         return newPost
     },
     updatePosts(id: string, title: string, shortDescription: string, content: string, blogId: string) {
-        let i = postsDb.indexOf(this.findPostsById(id))
+        let i = postsDb.indexOf(<PostType>this.findPostsById(id))
         postsDb[i].title = title
         postsDb[i].shortDescription = shortDescription
         postsDb[i].content = content
@@ -35,7 +35,7 @@ export const postsRepository = {
         return true
     },
     deletePosts(id: string) {
-        postsDb.splice(postsDb.indexOf(this.findPostsById(id)), 1)
+        postsDb.splice(postsDb.indexOf(<PostType>this.findPostsById(id)), 1)
         return true
     }
 }

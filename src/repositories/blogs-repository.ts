@@ -23,14 +23,14 @@ export const blogsRepository = {
         return newBlog
     },
     updateBlog(id: string, name: string, description: string, websiteUrl: string) {
-        let i = blogsDb.indexOf(this.findBlogById(id))
+        let i = blogsDb.indexOf(<BlogType>this.findBlogById(id))
         blogsDb[i].name = name
         blogsDb[i].description = description
         blogsDb[i].websiteUrl = websiteUrl
         return true
     },
     deleteBlog(id: string) {
-        blogsDb.splice(blogsDb.indexOf(this.findBlogById(id)), 1)
+        blogsDb.splice(blogsDb.indexOf(<BlogType>this.findBlogById(id)), 1)
         return true
     }
 }
