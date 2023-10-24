@@ -5,7 +5,6 @@ export const postsRouter = Router({})
 type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
-
 type PostType = {
     id: string,
     title: string,
@@ -14,12 +13,10 @@ type PostType = {
     blogId: string,
     blogName: string
 }
-
 type ErrorsMessages = {
     message: string,
     field: string
 }
-
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
@@ -91,7 +88,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     shortDescription: string,
     content: string,
     blogId: string
-}>, res: Response) => {
+    }>, res: Response) => {
 
     const id = req.params.id
     const post = postsDb.find((post) => post.id === id)

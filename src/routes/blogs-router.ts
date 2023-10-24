@@ -5,22 +5,20 @@ export const blogsRouter = Router({})
 type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
-
 type BlogType = {
     id: string,
     name: string,
     description: string,
     websiteUrl: string
 }
-
 type ErrorsMessages = {
     message: string,
     field: string
 }
-
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
+
 export const blogsDb: BlogType[] = []
 
 blogsRouter.get('/', (req: Request, res: Response) => {
@@ -81,7 +79,7 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     { name: string,
     description: string,
     websiteUrl: string
-}>, res: Response) => {
+    }>, res: Response) => {
 
     const id = req.params.id
     const blog = blogsDb.find((blog) => blog.id === id)
