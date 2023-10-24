@@ -22,15 +22,15 @@ export const blogsRepository = {
         blogsDb.push(newBlog)
         return newBlog
     },
-    updateBlog(blog: BlogType) {
-        let i = blogsDb.indexOf(blog)
-        blogsDb[i].name = blog.name
-        blogsDb[i].description = blog.description
-        blogsDb[i].websiteUrl = blog.websiteUrl
-        return
+    updateBlog(id: string, name: string, description: string, websiteUrl: string) {
+        let i = blogsDb.indexOf(this.findBlogById(id))
+        blogsDb[i].name = name
+        blogsDb[i].description = description
+        blogsDb[i].websiteUrl = websiteUrl
+        return true
     },
     deleteBlog(id: string) {
         blogsDb.splice(blogsDb.indexOf(this.findBlogById(id)), 1)
-        return
+        return true
     }
 }

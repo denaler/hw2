@@ -26,12 +26,12 @@ export const postsRepository = {
         postsDb.push(newPost)
         return newPost
     },
-    updatePosts(post: PostType) {
-        let i = postsDb.indexOf(post)
-        postsDb[i].title = post.title
-        postsDb[i].shortDescription = post.shortDescription
-        postsDb[i].content = post.content
-        postsDb[i].blogId = post.blogId
+    updatePosts(id: string, title: string, shortDescription: string, content: string, blogId: string) {
+        let i = postsDb.indexOf(this.findPostsById(id))
+        postsDb[i].title = title
+        postsDb[i].shortDescription = shortDescription
+        postsDb[i].content = content
+        postsDb[i].blogId = blogId
         return true
     },
     deletePosts(id: string) {

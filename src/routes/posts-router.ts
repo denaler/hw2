@@ -1,6 +1,6 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
-import {postsDb, postsRepository, PostType} from "../repositories/posts-repository";
+import {postsDb, postsRepository} from "../repositories/posts-repository";
 export const postsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
@@ -81,6 +81,8 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     }
 
     let {title, shortDescription, content, blogId} = req.body
+    let {id} = req.params
+
     if (!title || title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
     }
@@ -99,7 +101,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    const isUpdate = postsRepository.updatePosts(post)
+    const isUpdate = postsRepository.updatePosts(id, title, shortDescription, content, blogId)
     if (isUpdate) {
         res.sendStatus(204)
     }
