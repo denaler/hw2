@@ -1,18 +1,11 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
+import {postsDb, postsRepository, PostType} from "../repositories/posts-repository";
 export const postsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
-type PostType = {
-    id: string,
-    title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-    blogName: string
-}
 type ErrorsMessages = {
     message: string,
     field: string
@@ -20,8 +13,6 @@ type ErrorsMessages = {
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
-
-export const postsDb: PostType[] = []
 
 postsRouter.get('/', (req:Request, res: Response) => {
     res.status(200).send(postsDb)
@@ -57,23 +48,12 @@ postsRouter.post('/', (req:RequestWithBody<
         return
     }
 
-    const newPost: PostType = {
-        id: (new Date()).toString(),
-        title: title,
-        shortDescription: shortDescription,
-        content: content,
-        blogId: blogId,
-        blogName: ''
-    }
-
-    postsDb.push(newPost)
-
+    const newPost = postsRepository.createPost(title, shortDescription, content, blogId)
     res.status(201).send(newPost)
 })
 
 postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
-    const id = req.params.id
-    const post = postsDb.find((post) => post.id === id)
+    const post = postsRepository.findPostsById(req.params.id)
 
     if (!post) {
         res.sendStatus(404)
@@ -90,9 +70,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     blogId: string
     }>, res: Response) => {
 
-    const id = req.params.id
-    const post = postsDb.find((post) => post.id === id)
-
+    const post = postsRepository.findPostsById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return
@@ -121,24 +99,24 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    let i = postsDb.indexOf(post)
-    postsDb[i].title = title
-    postsDb[i].shortDescription = shortDescription
-    postsDb[i].content = content
-    postsDb[i].blogId = blogId
-
-    res.sendStatus(204)
+    const isUpdate = postsRepository.updatePosts(post)
+    if (isUpdate) {
+        res.sendStatus(204)
+    }
+    res.sendStatus(422)
 })
 
 postsRouter.delete('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
-    const id = req.params.id
-    const post = postsDb.find((post) => post.id === id)
 
+    const post = postsRepository.findPostsById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return
     }
-    postsDb.slice(postsDb.indexOf(post), 1)
 
-    res.sendStatus(200)
+    const isDelete = postsRepository.deletePosts(req.params.id)
+    if (isDelete) {
+        res.sendStatus(200)
+    }
+    res.sendStatus(422)
 })
