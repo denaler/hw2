@@ -35,7 +35,7 @@ export const postsRepository = {
         return true
     },
     deletePosts(id: string) {
-        postsDb.splice(postsDb.indexOf(<PostType>postsDb.find(p => p.id === id)), 1)
+        postsDb.splice(postsDb.indexOf(<PostType>this.findPostsById(id)), 1)
         return true
     },
     deleteDb(del: number) {

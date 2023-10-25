@@ -118,7 +118,7 @@ postsRouter.delete('/:id', (req:RequestWithParams<{ id: string }>, res: Response
 
     const isDelete = postsRepository.deletePosts(req.params.id)
     if (isDelete) {
-        res.sendStatus(200)
+        res.sendStatus(204)
     }
     res.sendStatus(422)
 })
