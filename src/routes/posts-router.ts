@@ -43,9 +43,6 @@ postsRouter.post('/', (req:RequestWithBody<
     if (!blogId || !blogId.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
-    if (!blogName || !blogName.length) {
-        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
-    }
 
     if (errors.errorsMessages.length) {
         res.status(400).send(errors)
@@ -98,9 +95,6 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         errors.errorsMessages.push({message: 'Invalid content', field: 'content'})
     }
     if (!blogId || !blogId.length) {
-        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
-    }
-    if (!blogName || !blogName.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
 
