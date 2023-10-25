@@ -29,7 +29,7 @@ blogsRouter.post('/', (req: RequestWithBody<
     }
     let {name, description, websiteUrl} = req.body
 
-    if (!name || !name.length || name.trim().length > 15) {
+    if (!name || !name.length || name.trim().length > 15 || name.trim().length === 0) {
         errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
     }
     if (!description || !description.length || description.trim().length > 500) {
