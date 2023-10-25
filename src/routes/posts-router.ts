@@ -23,12 +23,13 @@ postsRouter.post('/', (req:RequestWithBody<
     shortDescription: string,
     content: string,
     blogId: string
+    blogName: string
     }>, res: Response) => {
 
     let errors: ErrorType = {
         errorsMessages: []
     }
-    let {title, shortDescription, content, blogId} = req.body
+    let {title, shortDescription, content, blogId, blogName} = req.body
 
     if (!title || !title.length || title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
@@ -42,13 +43,16 @@ postsRouter.post('/', (req:RequestWithBody<
     if (!blogId || !blogId.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
+    if (!blogName || !blogName.length) {
+        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
+    }
 
     if (errors.errorsMessages.length) {
         res.status(400).send(errors)
         return
     }
 
-    const newPost = postsRepository.createPost(title, shortDescription, content, blogId)
+    const newPost = postsRepository.createPost(title, shortDescription, content, blogId, blogName)
     res.status(201).send(newPost)
 })
 
@@ -64,11 +68,12 @@ postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) =
 
 postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     { id: string },
-    { title: string,
+    {title: string,
     shortDescription: string,
     content: string,
     blogId: string
-    }>, res: Response) => {
+    blogName: string
+}>, res: Response) => {
 
     const post = postsRepository.findPostById(req.params.id)
     if (!post) {
@@ -80,7 +85,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         errorsMessages: []
     }
 
-    let {title, shortDescription, content, blogId} = req.body
+    let {title, shortDescription, content, blogId, blogName} = req.body
     let {id} = req.params
 
     if (!title || !title.length ||  title.trim().length > 30) {
@@ -95,13 +100,16 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     if (!blogId || !blogId.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
+    if (!blogName || !blogName.length) {
+        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
+    }
 
     if (errors.errorsMessages.length) {
         res.status(400).send(errors)
         return
     }
 
-    const isUpdate = postsRepository.updatePost(id, title, shortDescription, content, blogId)
+    const isUpdate = postsRepository.updatePost(id, title, shortDescription, content, blogId, blogName)
     if (isUpdate) {
         res.sendStatus(204)
     }

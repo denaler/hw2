@@ -4,7 +4,7 @@ type PostType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: null
+    blogName: string
 }
 const postsDb: PostType[] = []
 export const postsRepository = {
@@ -14,24 +14,25 @@ export const postsRepository = {
     findPostById(id: string) {
         return postsDb.find(p => p.id === id)
     },
-    createPost(title: string, shortDescription: string, content: string, blogId: string) {
+    createPost(title: string, shortDescription: string, content: string, blogId: string, blogName: string) {
         const newPost: PostType = {
             id: (new Date()).toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: null
+            blogName: blogName
         }
         postsDb.push(newPost)
         return newPost
     },
-    updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string) {
+    updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string, blogName: string) {
         let i = postsDb.indexOf(<PostType>this.findPostById(id))
         postsDb[i].title = title
         postsDb[i].shortDescription = shortDescription
         postsDb[i].content = content
         postsDb[i].blogId = blogId
+        postsDb[i].blogName = blogName
         return true
     },
     deletePost(id: string) {
