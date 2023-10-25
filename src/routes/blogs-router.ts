@@ -35,7 +35,7 @@ blogsRouter.post('/', (req: RequestWithBody<
     if (!description || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) !== -1) {
+    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
@@ -84,7 +84,7 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     if (!description || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) !== -1) {
+    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
