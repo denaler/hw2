@@ -13,7 +13,7 @@ type ErrorsMessages = {
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
-
+const reg = "^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$";
 blogsRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(blogsRepository.blogs(1))
 })
@@ -35,7 +35,7 @@ blogsRouter.post('/', (req: RequestWithBody<
     if (!description || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100) {
+    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
@@ -78,14 +78,13 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     let {id} = req.params
 
 
-
     if (!name || name.trim().length > 15) {
         errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
     }
     if (!description || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100) {
+    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
