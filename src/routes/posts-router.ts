@@ -30,16 +30,16 @@ postsRouter.post('/', (req:RequestWithBody<
     }
     let {title, shortDescription, content, blogId} = req.body
 
-    if (!title || title.trim().length > 30) {
+    if (!title || !title.length || title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
     }
-    if (!shortDescription || shortDescription.trim().length > 500) {
+    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid shortDescription', field: 'shortDescription'})
     }
-    if (!content || content.trim().length > 1000) {
+    if (!content || !content.length ||  content.trim().length > 1000) {
         errors.errorsMessages.push({message: 'Invalid content', field: 'content'})
     }
-    if (!blogId) {
+    if (!blogId || !blogId.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
 
@@ -83,16 +83,16 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     let {title, shortDescription, content, blogId} = req.body
     let {id} = req.params
 
-    if (!title || title.trim().length > 30) {
+    if (!title || !title.length ||  title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
     }
-    if (!shortDescription || shortDescription.trim().length > 100) {
+    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 100) {
         errors.errorsMessages.push({message: 'Invalid shortDescription', field: 'shortDescription'})
     }
-    if (!content || content.trim().length > 1000) {
+    if (!content || !content.length ||  content.trim().length > 1000) {
         errors.errorsMessages.push({message: 'Invalid content', field: 'content'})
     }
-    if (!blogId) {
+    if (!blogId || !blogId.length) {
         errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
     }
 
