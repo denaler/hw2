@@ -76,7 +76,7 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     }
     let {name, description, websiteUrl} = req.body
     let {id} = req.params
-    let reg = "^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$";
+
 
 
     if (!name || name.trim().length > 15) {
@@ -85,7 +85,7 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     if (!description || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
+    if (!websiteUrl || websiteUrl.trim().length > 100) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
