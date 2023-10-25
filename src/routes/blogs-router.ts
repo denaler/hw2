@@ -13,7 +13,7 @@ type ErrorsMessages = {
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
-const reg = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/;
+const reg = /^((https:\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?)/;
 blogsRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(blogsRepository.blogs(1))
 })
