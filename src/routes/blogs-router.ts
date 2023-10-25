@@ -35,7 +35,7 @@ blogsRouter.post('/', (req: RequestWithBody<
     if (!description || !description.length || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/) == -1) {
+    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/) !== -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
@@ -84,7 +84,7 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     if (!description || !description.length || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/) == -1) {
+    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/) !== -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
