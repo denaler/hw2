@@ -29,13 +29,13 @@ blogsRouter.post('/', (req: RequestWithBody<
     }
     let {name, description, websiteUrl} = req.body
 
-    if (!name || name.trim().length > 15) {
+    if (!name || !name.length || name.trim().length > 15) {
         errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
     }
-    if (!description || description.trim().length > 500) {
+    if (!description || !description.length || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
+    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
@@ -78,13 +78,13 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
     let {id} = req.params
 
 
-    if (!name || name.trim().length > 15) {
+    if (!name || !name.length || name.trim().length > 15) {
         errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
     }
-    if (!description || description.trim().length > 500) {
+    if (!description || !description.length || description.trim().length > 500) {
         errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
     }
-    if (!websiteUrl || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
+    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
         errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
     }
 
