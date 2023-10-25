@@ -1,6 +1,6 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
-import {blogsDb, blogsRepository} from "../repositories/blogs-repository";
+import {blogsRepository} from "../repositories/blogs-repository";
 export const blogsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
@@ -15,7 +15,7 @@ type ErrorType = {
 }
 
 blogsRouter.get('/', (req: Request, res: Response) => {
-    res.status(200).send(blogsDb)
+    res.status(200).send(blogsRepository.blogs(1))
 })
 
 blogsRouter.post('/', (req: RequestWithBody<

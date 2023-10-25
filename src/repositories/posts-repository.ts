@@ -1,4 +1,4 @@
-export type PostType = {
+type PostType = {
     id: string,
     title: string,
     shortDescription: string,
@@ -6,10 +6,10 @@ export type PostType = {
     blogId: string,
     blogName: string
 }
-export const postsDb: PostType[] = []
+const postsDb: PostType[] = []
 export const postsRepository = {
-    findPosts(searchTerm: string | null) {
-
+    posts(searchTerm: number) {
+        return postsDb
     },
     findPostsById(id: string) {
         return postsDb.find(p => p.id === id)
@@ -36,6 +36,10 @@ export const postsRepository = {
     },
     deletePosts(id: string) {
         postsDb.splice(postsDb.indexOf(<PostType>this.findPostsById(id)), 1)
+        return true
+    },
+    deleteDb(del: number) {
+        postsDb.length = del
         return true
     }
 }

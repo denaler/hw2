@@ -1,13 +1,13 @@
-export type BlogType = {
+type BlogType = {
     id: string,
     name: string,
     description: string,
     websiteUrl: string
 }
-export const blogsDb: BlogType[] = []
+const blogsDb: BlogType[] = []
 export const blogsRepository = {
-    findBlogs(searchTerm: string | null) {
-
+    blogs(searchTerm: number) {
+        return blogsDb
     },
     findBlogById(id: string) {
         return blogsDb.find(b => b.id === id)
@@ -31,6 +31,10 @@ export const blogsRepository = {
     },
     deleteBlog(id: string) {
         blogsDb.splice(blogsDb.indexOf(<BlogType>this.findBlogById(id)), 1)
+        return true
+    },
+    deleteDb(del: number) {
+        blogsDb.length = del
         return true
     }
 }
