@@ -21,7 +21,7 @@ export const postsRepository = {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: blogName
+            blogName: ""
         }
         postsDb.push(newPost)
         return newPost
