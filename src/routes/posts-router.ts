@@ -53,7 +53,7 @@ postsRouter.post('/', (req:RequestWithBody<
 })
 
 postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
-    const post = postsRepository.findPostsById(req.params.id)
+    const post = postsRepository.findPostById(req.params.id)
 
     if (!post) {
         res.sendStatus(404)
@@ -70,7 +70,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
     blogId: string
     }>, res: Response) => {
 
-    const post = postsRepository.findPostsById(req.params.id)
+    const post = postsRepository.findPostById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return
@@ -101,7 +101,7 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    const isUpdate = postsRepository.updatePosts(id, title, shortDescription, content, blogId)
+    const isUpdate = postsRepository.updatePost(id, title, shortDescription, content, blogId)
     if (isUpdate) {
         res.sendStatus(204)
     }
@@ -110,13 +110,13 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
 
 postsRouter.delete('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
 
-    const post = postsRepository.findPostsById(req.params.id)
+    const post = postsRepository.findPostById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return
     }
 
-    const isDelete = postsRepository.deletePosts(req.params.id)
+    const isDelete = postsRepository.deletePost(req.params.id)
     if (isDelete) {
         res.sendStatus(204)
     }

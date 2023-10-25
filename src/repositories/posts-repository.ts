@@ -11,7 +11,7 @@ export const postsRepository = {
     posts(searchTerm: number) {
         return postsDb
     },
-    findPostsById(id: string) {
+    findPostById(id: string) {
         return postsDb.find(p => p.id === id)
     },
     createPost(title: string, shortDescription: string, content: string, blogId: string) {
@@ -26,16 +26,16 @@ export const postsRepository = {
         postsDb.push(newPost)
         return newPost
     },
-    updatePosts(id: string, title: string, shortDescription: string, content: string, blogId: string) {
-        let i = postsDb.indexOf(<PostType>this.findPostsById(id))
+    updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string) {
+        let i = postsDb.indexOf(<PostType>this.findPostById(id))
         postsDb[i].title = title
         postsDb[i].shortDescription = shortDescription
         postsDb[i].content = content
         postsDb[i].blogId = blogId
         return true
     },
-    deletePosts(id: string) {
-        postsDb.splice(postsDb.indexOf(<PostType>this.findPostsById(id)), 1)
+    deletePost(id: string) {
+        postsDb.splice(postsDb.indexOf(<PostType>this.findPostById(id)), 1)
         return true
     },
     deleteDb(del: number) {
