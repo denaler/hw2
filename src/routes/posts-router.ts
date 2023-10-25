@@ -13,7 +13,6 @@ type ErrorsMessages = {
 type ErrorType = {
     errorsMessages: ErrorsMessages[]
 }
-
 postsRouter.get('/', (req:Request, res: Response) => {
     res.status(200).send(postsRepository.posts(1))
 })
@@ -34,7 +33,7 @@ postsRouter.post('/', (req:RequestWithBody<
     if (!title || !title.length || title.trim().length > 30) {
         errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
     }
-    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 500) {
+    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 100) {
         errors.errorsMessages.push({message: 'Invalid shortDescription', field: 'shortDescription'})
     }
     if (!content || !content.length ||  content.trim().length > 1000) {
