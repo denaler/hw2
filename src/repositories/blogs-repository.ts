@@ -23,7 +23,7 @@ export const blogsRepository = {
         return newBlog
     },
     updateBlog(id: string, name: string, description: string, websiteUrl: string) {
-        let i = blogsDb.indexOf(<BlogType>this.findBlogById(id))
+        let i = blogsDb.indexOf(<BlogType>blogsDb.find(b => b.id === id))
         blogsDb[i].name = name
         blogsDb[i].description = description
         blogsDb[i].websiteUrl = websiteUrl
