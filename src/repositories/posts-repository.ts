@@ -4,7 +4,7 @@ type PostType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: null
 }
 const postsDb: PostType[] = []
 export const postsRepository = {
@@ -21,7 +21,7 @@ export const postsRepository = {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: ''
+            blogName: null
         }
         postsDb.push(newPost)
         return newPost
