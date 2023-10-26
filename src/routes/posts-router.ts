@@ -1,58 +1,45 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
 import {postsRepository} from "../repositories/posts-repository";
+import {body} from "express-validator";
+import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 export const postsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
-type ErrorsMessages = {
-    message: string,
-    field: string
-}
-type ErrorType = {
-    errorsMessages: ErrorsMessages[]
-}
+
+const titleValidation = body('title').trim().isLength({ min: 1, max: 30})
+const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100})
+const contentValidation = body('content').trim().isLength({ min: 1, max: 1000})
+const blogIdValidation = body('blogId').trim().isLength({ min: 1 })
 postsRouter.get('/', (req:Request, res: Response) => {
+
     res.status(200).send(postsRepository.posts(1))
 })
 
-postsRouter.post('/', (req:RequestWithBody<
+postsRouter.post('/',
+    titleValidation,
+    shortDescriptionValidation,
+    contentValidation,
+    blogIdValidation,
+    inputValidationMiddleware,
+    (req:RequestWithBody<
     {title: string,
     shortDescription: string,
     content: string,
-    blogId: string
+    blogId: string,
     blogName: string
     }>, res: Response) => {
 
-    let errors: ErrorType = {
-        errorsMessages: []
-    }
-    let {title, shortDescription, content, blogId, blogName} = req.body
-
-    if (!title || !title.length || title.trim().length > 30) {
-        errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
-    }
-    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 100) {
-        errors.errorsMessages.push({message: 'Invalid shortDescription', field: 'shortDescription'})
-    }
-    if (!content || !content.length ||  content.trim().length > 1000) {
-        errors.errorsMessages.push({message: 'Invalid content', field: 'content'})
-    }
-    if (!blogId || !blogId.length) {
-        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
-    }
-
-    if (errors.errorsMessages.length) {
-        res.status(400).send(errors)
-        return
-    }
+    let {title, shortDescription, content, blogId, blogName } = req.body
 
     const newPost = postsRepository.createPost(title, shortDescription, content, blogId, blogName)
     res.status(201).send(newPost)
 })
 
 postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
+
     const post = postsRepository.findPostById(req.params.id)
 
     if (!post) {
@@ -62,7 +49,13 @@ postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) =
     res.status(200).send(post)
 })
 
-postsRouter.put('/:id', (req:RequestWithParamsAndBody<
+postsRouter.put('/:id',
+    titleValidation,
+    shortDescriptionValidation,
+    contentValidation,
+    blogIdValidation,
+    inputValidationMiddleware,
+    (req:RequestWithParamsAndBody<
     { id: string },
     {title: string,
     shortDescription: string,
@@ -77,30 +70,8 @@ postsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    let errors: ErrorType = {
-        errorsMessages: []
-    }
-
     let {title, shortDescription, content, blogId, blogName} = req.body
     let {id} = req.params
-
-    if (!title || !title.length ||  title.trim().length > 30) {
-        errors.errorsMessages.push({message: 'Invalid title', field: 'title'})
-    }
-    if (!shortDescription || !shortDescription.length ||  shortDescription.trim().length > 100) {
-        errors.errorsMessages.push({message: 'Invalid shortDescription', field: 'shortDescription'})
-    }
-    if (!content || !content.length ||  content.trim().length > 1000) {
-        errors.errorsMessages.push({message: 'Invalid content', field: 'content'})
-    }
-    if (!blogId || !blogId.length) {
-        errors.errorsMessages.push({message: 'Invalid blogId', field: 'blogId'})
-    }
-
-    if (errors.errorsMessages.length) {
-        res.status(400).send(errors)
-        return
-    }
 
     const isUpdate = postsRepository.updatePost(id, title, shortDescription, content, blogId, blogName)
     if (isUpdate) {

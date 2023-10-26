@@ -1,48 +1,36 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
 import {blogsRepository} from "../repositories/blogs-repository";
+import {body} from "express-validator";
+import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
+
 export const blogsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
-type ErrorsMessages = {
-    message: string,
-    field: string
-}
-type ErrorType = {
-    errorsMessages: ErrorsMessages[]
-}
-const reg = /^((https:\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?)/;
+
+const nameValidation = body('name').trim().isLength({ min: 1, max: 15})
+const descriptionValidation = body('description').trim().isLength({ min: 1, max: 500})
+const websiteUrlValidation = body('websiteUrl').trim().isLength({ min: 1, max: 100}).isURL({ protocols: ['https'] })
+
 blogsRouter.get('/', (req: Request, res: Response) => {
+
     res.status(200).send(blogsRepository.blogs(1))
 })
 
-blogsRouter.post('/', (req: RequestWithBody<
+blogsRouter.post('/',
+    nameValidation,
+    descriptionValidation,
+    websiteUrlValidation,
+    inputValidationMiddleware,
+    (req: RequestWithBody<
     {name: string,
     description: string,
     websiteUrl: string
     }>, res: Response) => {
 
-    let errors: ErrorType = {
-        errorsMessages: []
-    }
     let {name, description, websiteUrl} = req.body
-
-    if (!name || !name.length || name.trim().length > 15 || name.trim().length === 0) {
-        errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
-    }
-    if (!description || !description.length || description.trim().length > 500) {
-        errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
-    }
-    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
-        errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
-    }
-
-    if (errors.errorsMessages.length) {
-        res.status(400).send(errors)
-        return
-    }
 
     const newBlog = blogsRepository.createBlogs(name,description,websiteUrl)
     res.status(201).send(newBlog)
@@ -58,7 +46,12 @@ blogsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) =
     res.status(200).send(blog)
 })
 
-blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
+blogsRouter.put('/:id',
+    nameValidation,
+    descriptionValidation,
+    websiteUrlValidation,
+    inputValidationMiddleware,
+    (req:RequestWithParamsAndBody<
     { id: string },
     { name: string,
     description: string,
@@ -71,27 +64,8 @@ blogsRouter.put('/:id', (req:RequestWithParamsAndBody<
         return
     }
 
-    let errors: ErrorType = {
-        errorsMessages: []
-    }
     let {name, description, websiteUrl} = req.body
     let {id} = req.params
-
-
-    if (!name || !name.length || name.trim().length > 15 || name.trim().length === 0) {
-        errors.errorsMessages.push({message: 'Invalid name', field: 'name'})
-    }
-    if (!description || !description.length || description.trim().length > 500) {
-        errors.errorsMessages.push({message: 'Invalid description', field: 'description'})
-    }
-    if (!websiteUrl || !websiteUrl.length || websiteUrl.trim().length > 100 || websiteUrl.search(reg) == -1) {
-        errors.errorsMessages.push({message: 'Invalid websiteUrl', field: 'websiteUrl'})
-    }
-
-    if (errors.errorsMessages.length) {
-        res.status(400).send(errors)
-        return
-    }
 
     const isUpdate = blogsRepository.updateBlog(id, name, description, websiteUrl)
     if (isUpdate) {
