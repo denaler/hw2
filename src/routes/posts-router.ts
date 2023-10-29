@@ -18,8 +18,9 @@ const blogIdValidation = body('blogId').custom(id => {
     const isBlog = blogsRepository.findBlogById(id)
     if (!isBlog) {
         throw new Error("blogId")
+    } else {
+        return true
     }
-    return true
 })
 postsRouter.get('/', (req:Request, res: Response) => {
 

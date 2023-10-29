@@ -4,7 +4,7 @@ type PostType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string | null
 }
 const postsDb: PostType[] = []
 export const postsRepository = {
@@ -32,7 +32,11 @@ export const postsRepository = {
         postsDb[i].shortDescription = shortDescription
         postsDb[i].content = content
         postsDb[i].blogId = blogId
-        postsDb[i].blogName = blogName
+        if (blogName) {
+            postsDb[i].blogName = blogName
+        } else {
+            postsDb[i].blogName = null
+        }
         return true
     },
     deletePost(id: string) {
