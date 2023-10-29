@@ -3,6 +3,7 @@ import express, {Request, Response} from 'express';
 import {postsRepository} from "../repositories/posts-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
+import {blogsRepository} from "../repositories/blogs-repository";
 
 export const postsRouter = Router({})
 
@@ -10,10 +11,16 @@ type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
 
-const titleValidation = body('title').trim().isLength({ min: 1, max: 30}).withMessage('Invalid title')
-const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100}).withMessage('Invalid shortDescription')
-const contentValidation = body('content').trim().isLength({ min: 1, max: 1000}).withMessage('Invalid content')
-const blogIdValidation = body('blogId').trim().isLength({ min: 1 }).withMessage('Invalid blogId')
+const titleValidation = body('title').trim().isLength({ min: 1, max: 30})
+const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100})
+const contentValidation = body('content').trim().isLength({ min: 1, max: 1000})
+const blogIdValidation = body('blogId').custom(id => {
+    const isBlog = blogsRepository.findBlogById(id)
+    if (!isBlog) {
+        throw new Error("blogId")
+    }
+    return true
+})
 postsRouter.get('/', (req:Request, res: Response) => {
 
     res.status(200).send(postsRepository.posts(1))
@@ -35,8 +42,9 @@ postsRouter.post('/',
 
     let {title, shortDescription, content, blogId, blogName } = req.body
 
-    const newPost = postsRepository.createPost(title, shortDescription, content, blogId, blogName)
-    res.status(201).send(newPost)
+        const newPost = postsRepository.createPost(title, shortDescription, content, blogId, blogName)
+
+        res.status(201).send(newPost)
 })
 
 postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
