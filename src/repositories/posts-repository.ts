@@ -34,8 +34,6 @@ export const postsRepository = {
         postsDb[i].blogId = blogId
         if (blogName) {
             postsDb[i].blogName = blogName
-        } else {
-            postsDb[i].blogName = null
         }
         return true
     },
