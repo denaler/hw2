@@ -10,10 +10,10 @@ type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
 
-const titleValidation = body('title').trim().isLength({ min: 1, max: 30})
-const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100})
-const contentValidation = body('content').trim().isLength({ min: 1, max: 1000})
-const blogIdValidation = body('blogId').trim().isLength({ min: 1 })
+const titleValidation = body('title').trim().isLength({ min: 1, max: 30}).withMessage('Invalid title')
+const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100}).withMessage('Invalid shortDescription')
+const contentValidation = body('content').trim().isLength({ min: 1, max: 1000}).withMessage('Invalid content')
+const blogIdValidation = body('blogId').trim().isLength({ min: 1 }).withMessage('Invalid blogId')
 postsRouter.get('/', (req:Request, res: Response) => {
 
     res.status(200).send(postsRepository.posts(1))
