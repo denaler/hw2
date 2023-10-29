@@ -12,7 +12,7 @@ type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
 
 const nameValidation = body('name').trim().isLength({ min: 1, max: 15})
 const descriptionValidation = body('description').trim().isLength({ min: 1, max: 500})
-const websiteUrlValidation = body('websiteUrl').trim().isLength({ min: 1, max: 100}).isURL({ protocols: ['https'] })
+const websiteUrlValidation = body('websiteUrl').trim().isURL({ protocols: ['https'] })
 
 blogsRouter.get('/', (req: Request, res: Response) => {
 

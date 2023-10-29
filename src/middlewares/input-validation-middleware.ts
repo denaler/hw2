@@ -1,12 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
 
-type ErrorsMessages = {
-    message: string
-    field: string
-}
-
-
 export const inputValidationMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
     const myValidationResult = validationResult.withDefaults({
