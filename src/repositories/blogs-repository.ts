@@ -10,7 +10,7 @@ export const blogsRepository = {
     },
     createBlogs(name: string, description: string, websiteUrl: string) {
         const newBlog: BlogsViewModel = {
-            id: (new Date()).toString(),
+            id: (+ new Date() + 1).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl
