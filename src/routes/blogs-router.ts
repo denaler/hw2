@@ -18,7 +18,7 @@ blogsRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(blogsRepository.blogs(1))
 })
 
-blogsRouter.post('/', blogInputValidation, inputValidationMiddleware,
+blogsRouter.post('/', authorizationMiddleware, blogInputValidation, inputValidationMiddleware,
 
     (req: RequestWithBody<BodyBlogModel>, res: Response) => {
 
@@ -39,7 +39,7 @@ blogsRouter.get('/:id', (req:RequestWithParams<ParamsBlogModel>, res: Response) 
     res.status(200).send(blog)
 })
 
-blogsRouter.put('/:id', blogInputValidation, inputValidationMiddleware,
+blogsRouter.put('/:id', authorizationMiddleware, blogInputValidation, inputValidationMiddleware,
 
     (req:RequestWithParamsAndBody<ParamsBlogModel, BodyBlogModel>, res: Response) => {
 
@@ -59,7 +59,7 @@ blogsRouter.put('/:id', blogInputValidation, inputValidationMiddleware,
     res.sendStatus(422)
 })
 
-blogsRouter.delete('/:id',
+blogsRouter.delete('/:id', authorizationMiddleware,
 
     (req:RequestWithParams<ParamsBlogModel>, res: Response) => {
 
