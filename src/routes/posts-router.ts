@@ -1,9 +1,12 @@
 import {Router} from "express";
 import express, {Request, Response} from 'express';
 import {postsRepository} from "../repositories/posts-repository";
-import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
-import {blogsRepository} from "../repositories/blogs-repository";
+import {authorizationMiddleware} from "../middlewares/authorization-middleware";
+import {postInputValidation} from "../validation/posts-validation";
+import {BodyPostModel} from "../features/posts/models/input/body-post-model";
+import {ParamsPostModel} from "../features/posts/models/input/params-post-model";
+
 
 export const postsRouter = Router({})
 
@@ -11,35 +14,16 @@ type RequestWithParams<P> = Request<P, {}, {}, {}>
 type RequestWithBody<B> = Request<{}, {}, B, {}>
 type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
 
-const titleValidation = body('title').trim().isLength({ min: 1, max: 30})
-const shortDescriptionValidation = body('shortDescription').trim().isLength({ min: 1, max: 100})
-const contentValidation = body('content').trim().isLength({ min: 1, max: 1000})
-const blogIdValidation = body('blogId').custom(id => {
-    const isBlog = blogsRepository.findBlogById(id)
-    if (!isBlog) {
-        throw new Error("blogId")
-    } else {
-        return true
-    }
-})
+
 postsRouter.get('/', (req:Request, res: Response) => {
 
     res.status(200).send(postsRepository.posts(1))
 })
 
 postsRouter.post('/',
-    titleValidation,
-    shortDescriptionValidation,
-    contentValidation,
-    blogIdValidation,
-    inputValidationMiddleware,
-    (req:RequestWithBody<
-    {title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-    blogName: string
-    }>, res: Response) => {
+    authorizationMiddleware, postInputValidation, inputValidationMiddleware,
+
+    (req:RequestWithBody<BodyPostModel>, res: Response) => {
 
     let {title, shortDescription, content, blogId, blogName } = req.body
 
@@ -48,7 +32,7 @@ postsRouter.post('/',
         res.status(201).send(newPost)
 })
 
-postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
+postsRouter.get('/:id', (req:RequestWithParams<ParamsPostModel>, res: Response) => {
 
     const post = postsRepository.findPostById(req.params.id)
 
@@ -59,20 +43,9 @@ postsRouter.get('/:id', (req:RequestWithParams<{ id: string }>, res: Response) =
     res.status(200).send(post)
 })
 
-postsRouter.put('/:id',
-    titleValidation,
-    shortDescriptionValidation,
-    contentValidation,
-    blogIdValidation,
-    inputValidationMiddleware,
-    (req:RequestWithParamsAndBody<
-    { id: string },
-    {title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string
-    blogName: string
-}>, res: Response) => {
+postsRouter.put('/:id', authorizationMiddleware, postInputValidation, inputValidationMiddleware,
+
+    (req:RequestWithParamsAndBody<ParamsPostModel, BodyPostModel>, res: Response) => {
 
     const post = postsRepository.findPostById(req.params.id)
     if (!post) {
@@ -90,7 +63,9 @@ postsRouter.put('/:id',
     res.sendStatus(422)
 })
 
-postsRouter.delete('/:id', (req:RequestWithParams<{ id: string }>, res: Response) => {
+postsRouter.delete('/:id',
+    authorizationMiddleware,
+    (req:RequestWithParams<ParamsPostModel>, res: Response) => {
 
     const post = postsRepository.findPostById(req.params.id)
     if (!post) {

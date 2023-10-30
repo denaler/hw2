@@ -1,10 +1,6 @@
-type BlogType = {
-    id: string,
-    name: string,
-    description: string,
-    websiteUrl: string
-}
-const blogsDb: BlogType[] = []
+import {BlogsViewModel} from "../features/blogs/models/output/blogs-view-model";
+
+const blogsDb: BlogsViewModel[] = []
 export const blogsRepository = {
     blogs(searchTerm: number) {
         return blogsDb
@@ -13,7 +9,7 @@ export const blogsRepository = {
         return blogsDb.find(b => b.id === id)
     },
     createBlogs(name: string, description: string, websiteUrl: string) {
-        const newBlog: BlogType = {
+        const newBlog: BlogsViewModel = {
             id: (new Date()).toString(),
             name: name,
             description: description,
@@ -23,14 +19,14 @@ export const blogsRepository = {
         return newBlog
     },
     updateBlog(id: string, name: string, description: string, websiteUrl: string) {
-        let i = blogsDb.indexOf(<BlogType>blogsDb.find(b => b.id === id))
+        let i = blogsDb.indexOf(<BlogsViewModel>blogsDb.find(b => b.id === id))
         blogsDb[i].name = name
         blogsDb[i].description = description
         blogsDb[i].websiteUrl = websiteUrl
         return true
     },
     deleteBlog(id: string) {
-        blogsDb.splice(blogsDb.indexOf(<BlogType>this.findBlogById(id)), 1)
+        blogsDb.splice(blogsDb.indexOf(<BlogsViewModel>this.findBlogById(id)), 1)
         return true
     },
     deleteDb(del: number) {
