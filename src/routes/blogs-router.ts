@@ -18,7 +18,7 @@ blogsRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(blogsRepository.blogs(1))
 })
 
-blogsRouter.post('/', authorizationMiddleware, blogInputValidation, inputValidationMiddleware,
+blogsRouter.post('/', blogInputValidation, inputValidationMiddleware,
 
     (req: RequestWithBody<BodyBlogModel>, res: Response) => {
 
@@ -39,7 +39,7 @@ blogsRouter.get('/:id', (req:RequestWithParams<ParamsBlogModel>, res: Response) 
     res.status(200).send(blog)
 })
 
-blogsRouter.put('/:id', authorizationMiddleware, blogInputValidation, inputValidationMiddleware,
+blogsRouter.put('/:id', blogInputValidation, inputValidationMiddleware,
 
     (req:RequestWithParamsAndBody<ParamsBlogModel, BodyBlogModel>, res: Response) => {
 
@@ -59,7 +59,9 @@ blogsRouter.put('/:id', authorizationMiddleware, blogInputValidation, inputValid
     res.sendStatus(422)
 })
 
-blogsRouter.delete('/:id', (req:RequestWithParams<ParamsBlogModel>, res: Response) => {
+blogsRouter.delete('/:id',
+
+    (req:RequestWithParams<ParamsBlogModel>, res: Response) => {
 
     const blog = blogsRepository.findBlogById(req.params.id)
     if (!blog) {

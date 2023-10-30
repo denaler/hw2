@@ -20,8 +20,7 @@ postsRouter.get('/', (req:Request, res: Response) => {
     res.status(200).send(postsRepository.posts(1))
 })
 
-postsRouter.post('/',
-    authorizationMiddleware, postInputValidation, inputValidationMiddleware,
+postsRouter.post('/', postInputValidation, inputValidationMiddleware,
 
     (req:RequestWithBody<BodyPostModel>, res: Response) => {
 
@@ -43,7 +42,7 @@ postsRouter.get('/:id', (req:RequestWithParams<ParamsPostModel>, res: Response) 
     res.status(200).send(post)
 })
 
-postsRouter.put('/:id', authorizationMiddleware, postInputValidation, inputValidationMiddleware,
+postsRouter.put('/:id', postInputValidation, inputValidationMiddleware,
 
     (req:RequestWithParamsAndBody<ParamsPostModel, BodyPostModel>, res: Response) => {
 
@@ -64,7 +63,7 @@ postsRouter.put('/:id', authorizationMiddleware, postInputValidation, inputValid
 })
 
 postsRouter.delete('/:id',
-    authorizationMiddleware,
+
     (req:RequestWithParams<ParamsPostModel>, res: Response) => {
 
     const post = postsRepository.findPostById(req.params.id)
