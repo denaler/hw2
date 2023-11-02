@@ -7,7 +7,6 @@ import {postInputValidation} from "../validation/posts-validation";
 import {BodyPostModel} from "../features/posts/models/input/body-post-model";
 import {ParamsPostModel} from "../features/posts/models/input/params-post-model";
 
-
 export const postsRouter = Router({})
 
 type RequestWithParams<P> = Request<P, {}, {}, {}>
